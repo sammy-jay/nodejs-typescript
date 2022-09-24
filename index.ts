@@ -1,17 +1,20 @@
-import * as fs from 'fs';
-import * as util from 'util';
+import touch from './utils/touch'
+import cat from './utils/cat'
 
-// using callbacks
-fs.writeFile('file.txt', 'hello, world.', (err) => {
-	if(err){
-		console.log(err);
-	}else{
-		console.log('File created successfully');
+const command = process.argv[2];
+const path = process.argv[3];
+
+if (command && path) {
+	switch (command) {
+		case 'touch':
+			touch(path);
+			break;
+		case 'cat':
+			cat(path);
+			break;
+		default:
+			console.log('Unknown command');
 	}
-})
-
-const writeFile = util.promisify(fs.writeFile);
-
-writeFile('new-file.txt', 'hello, world again.')
-	.then(() => console.log('Success'))
-	.catch(error => console.log(error))
+} else {
+	console.log('Missing command');
+}
