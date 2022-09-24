@@ -1,20 +1,26 @@
-import touch from './utils/touch'
-import cat from './utils/cat'
+import * as EventEmitter from 'events'
 
-const command = process.argv[2];
-const path = process.argv[3];
+const eventEmitter = new EventEmitter()
 
-if (command && path) {
-	switch (command) {
-		case 'touch':
-			touch(path);
-			break;
-		case 'cat':
-			cat(path);
-			break;
-		default:
-			console.log('Unknown command');
-	}
-} else {
-	console.log('Missing command');
+function listener (data: object) {
+	console.log(data)
 }
+
+function listener2 () {
+	console.log("Listener two")
+}
+
+eventEmitter.on('event', listener)
+eventEmitter.once('event2', listener2)
+
+eventEmitter.emit('event', { name: 'Tolu' })
+eventEmitter.emit('event', { name: 'Tolu' })
+eventEmitter.emit('event', { name: 'Tolu' })
+
+eventEmitter.removeAllListeners('event')
+
+eventEmitter.emit('event', { name: 'Tolu' })
+
+eventEmitter.emit('event2')
+eventEmitter.emit('event2')
+eventEmitter.emit('event2')
